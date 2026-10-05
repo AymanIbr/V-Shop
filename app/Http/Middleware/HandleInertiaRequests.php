@@ -33,7 +33,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user()?->only('id', 'name', 'email', 'isAdmin'),
             ],
             'flash' => [
                 'success' => fn() => $request->session()->get('success'),
@@ -44,8 +44,6 @@ class HandleInertiaRequests extends Middleware
 
             'canRegister' => app('router')->has('register'),
             'canLogin' => app('router')->has('login'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
         ];
     }
 }
