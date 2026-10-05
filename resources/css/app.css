@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@plugin "flowbite/plugin";
+@plugin "@tailwindcss/forms";
+@source "../../node_modules/flowbite-vue";
+@source "../../node_modules/flowbite";
+@source "../js";
+@source "../views";
