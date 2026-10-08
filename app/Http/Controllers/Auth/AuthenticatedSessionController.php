@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\CartService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,12 @@ use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
+
+
+    public function __construct(
+        private CartService $cart
+    ) {}
+
     /**
      * Display the login view.
      */
@@ -32,6 +39,10 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        $user = Auth::user();
+        $this->cart->saveCookieCartItemsToDatabase($user);
+
 
         return redirect()->intended(route('dashboard', absolute: false));
     }

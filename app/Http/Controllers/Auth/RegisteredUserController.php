@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\CartService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,6 +17,10 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+
+    public function __construct(
+        private CartService $cart
+    ) {}
     /**
      * Display the registration view.
      */
@@ -42,6 +47,8 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $this->cart->saveCookieCartItemsToDatabase($user);
 
         event(new Registered($user));
 

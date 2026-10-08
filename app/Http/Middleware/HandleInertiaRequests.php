@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\CartService;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -44,6 +45,9 @@ class HandleInertiaRequests extends Middleware
 
             'canRegister' => app('router')->has('register'),
             'canLogin' => app('router')->has('login'),
+
+            'cartCount' => fn () =>
+            app(CartService::class)->getCartCount(),
         ];
     }
 }

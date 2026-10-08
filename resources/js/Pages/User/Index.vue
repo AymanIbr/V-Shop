@@ -1,6 +1,8 @@
 <script setup>
-import { Head } from '@inertiajs/vue3'
+import { Head, router, usePage } from '@inertiajs/vue3'
 import UserLayout from './Layouts/UserLayout.vue';
+import Swal from 'sweetalert2';
+import Hero from './Layouts/Hero.vue';
 
 defineProps({
     products: {
@@ -8,6 +10,34 @@ defineProps({
         required: true
     }
 })
+const page = usePage()
+
+
+// Add to cart
+const addToCart = (product) => {
+    router.post(route('cart.store', { product: product.id }), { quantity: 1 }, {
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to cart',
+                text: page.props.flash.success || 'Product added to cart successfully.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        },
+        onError: (errors) => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errors.error || 'An error occurred while adding the product to the cart.',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+    });
+}
 
 </script>
 
@@ -17,6 +47,11 @@ defineProps({
     <Head title="Home" />
 
     <UserLayout>
+
+        <!-- Hero section -->
+        <Hero />
+        <!-- end hero section -->
+
 
         <main class="max-w-screen-xl mx-auto px-4 pt-10 pb-28">
 
@@ -63,7 +98,8 @@ defineProps({
                         </div>
 
                         <button type="button" :disabled="!product.in_stock" aria-label="Add to cart"
-                            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-900 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-300 dark:bg-white dark:text-gray-900 dark:hover:bg-blue-500 dark:hover:text-white dark:disabled:bg-gray-700">
+                            @click="addToCart(product)"
+                            class="flex h-9 cursor-pointer w-9 shrink-0 items-center justify-center rounded-full bg-gray-900 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-gray-300 dark:bg-white dark:text-gray-900 dark:hover:bg-blue-500 dark:hover:text-white dark:disabled:bg-gray-700">
                             <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14" />
                             </svg>
@@ -77,3 +113,9 @@ defineProps({
 
 
 </template>
+
+<!--
+- Add to cart
+1- write a function to add the product to the cart
+
+-->

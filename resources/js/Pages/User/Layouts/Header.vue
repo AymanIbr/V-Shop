@@ -14,12 +14,18 @@ const auth = computed(() => page.props.auth);
     <nav class="bg-white border-gray-200 dark:bg-gray-900">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <Link href="/" class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+
                 <span class="text-2xl font-semibold dark:text-white">V.Shop</span>
             </Link>
             <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
 
                 <!-- Shopping Cart -->
-                <Link class="relative flex items-center mr-4 justify-center w-10 h-10
+                <Link :href="route('cart.index')" class="relative flex items-center mr-4 justify-center w-10 h-10
            text-gray-600 hover:text-blue-600
            rounded-lg hover:bg-gray-100
            transition-all duration-200
@@ -32,14 +38,15 @@ const auth = computed(() => page.props.auth);
                     </svg>
 
                     <!-- Cart Count -->
-                    <span class="absolute -top-1 -right-1
+                    <span v-if="page.props.cartCount > 0" class="absolute -top-1 -right-1
                min-w-[20px] h-5 px-1
                flex items-center justify-center
                rounded-full
                bg-red-500 text-white
                text-xs font-bold
                ring-2 ring-white dark:ring-gray-900">
-                        5
+                        {{ page.props.cartCount }}
+
                     </span>
                 </Link>
 
@@ -62,7 +69,7 @@ const auth = computed(() => page.props.auth);
                         <div class="px-4 py-3">
                             <span class="block text-sm text-gray-900 dark:text-white">{{ auth.user.name }}</span>
                             <span class="block text-sm text-gray-500 truncate dark:text-gray-400">{{ auth.user.email
-                                }}</span>
+                            }}</span>
                         </div>
                         <ul class="py-2" aria-labelledby="user-menu-button">
                             <li>
