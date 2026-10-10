@@ -1,7 +1,6 @@
 <script setup>
-import { Head, router, usePage } from '@inertiajs/vue3'
+import { Head, Link } from '@inertiajs/vue3'
 import UserLayout from './Layouts/UserLayout.vue';
-import Swal from 'sweetalert2';
 import Hero from './Layouts/Hero.vue';
 
 defineProps({
@@ -10,34 +9,37 @@ defineProps({
         required: true
     }
 })
-const page = usePage()
 
+// cart
+import { useCart } from '@/Composables/useCart'
+const { addToCart } = useCart()
 
-// Add to cart
-const addToCart = (product) => {
-    router.post(route('cart.store', { product: product.id }), { quantity: 1 }, {
-        preserveScroll: true,
-        preserveState: true,
-        onSuccess: () => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Added to cart',
-                text: page.props.flash.success || 'Product added to cart successfully.',
-                timer: 2000,
-                showConfirmButton: false
-            });
-        },
-        onError: (errors) => {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: errors.error || 'An error occurred while adding the product to the cart.',
-                timer: 2000,
-                showConfirmButton: false
-            });
-        }
-    });
-}
+// add to cart in resources/js/Composables/useCart.js.
+
+// const addToCart = (product) => {
+//     router.post(route('cart.store', { product: product.id }), { quantity: 1 }, {
+//         preserveScroll: true,
+//         preserveState: true,
+//         onSuccess: () => {
+//             Swal.fire({
+//                 icon: 'success',
+//                 title: 'Added to cart',
+//                 text: page.props.flash.success || 'Product added to cart successfully.',
+//                 timer: 2000,
+//                 showConfirmButton: false
+//             });
+//         },
+//         onError: (errors) => {
+//             Swal.fire({
+//                 icon: 'error',
+//                 title: 'Error',
+//                 text: errors.error || 'An error occurred while adding the product to the cart.',
+//                 timer: 2000,
+//                 showConfirmButton: false
+//             });
+//         }
+//     });
+// }
 
 </script>
 
@@ -106,8 +108,19 @@ const addToCart = (product) => {
                         </button>
                     </div>
                 </article>
+
+
+            </div>
+            <div class="flex items-center justify-center">
+                <Link :href="route('productList.index')"
+                    class="mt-5 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:from-cyan-600 hover:to-blue-600 hover:shadow-md focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800">
+                    All Products
+                </Link>
+
             </div>
         </main>
+
+
 
     </UserLayout>
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\ProductListController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,14 +25,17 @@ use Inertia\Inertia;
 
 
 Route::get('/', [UserController::class, 'index'])->name('user.home');
-
-
 Route::controller(CartController::class)->prefix('cart')->name('cart.')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('{product}', 'store')->name('store');
     Route::patch('{product}', 'update')->name('update');
     Route::delete('{product}', 'destroy')->name('destroy');
 });
+
+// Route for Product List & Filter
+ Route::prefix('products')->controller(ProductListController::class)->group(function() {
+        Route::get('/','index')->name('productList.index');
+ });
 
 
 

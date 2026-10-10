@@ -62,4 +62,12 @@ class Product extends Model
             }
         });
     }
+
+
+    // if you want scop
+//     #[Scope]
+// protected function published(Builder $query): void
+// {
+//     $query->where('is_published', true);
+// }
 }
