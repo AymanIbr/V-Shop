@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\User\CheckoutController;
+use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\ProductListController;
 use App\Http\Controllers\User\UserAddressController;
 use App\Http\Controllers\User\UserController;
@@ -50,10 +51,8 @@ Route::middleware('auth')->group(function () {
 Route::post('/stripe/webhook', [CheckoutController::class, 'webhook'])->name('stripe.webhook');
 
 
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// user dashboard
+Route::get('/dashboard',[DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -110,3 +109,15 @@ require __DIR__ . '/auth.php';
 
 // make home page
 // php artisan make:controller User/UserController
+
+
+// make dashboard user
+// 1- php artisan make:controller User/DashboardController
+// 2- make method index
+// 3- make page Dashboard inside User Folder
+// 4- update route dashboard
+
+
+
+// play list
+// https://www.youtube.com/watch?v=3v-TdjdvEIg&list=PLRQ1njZomKvE4XJQjdrYuyKMw6-0-6e6x&index=16
