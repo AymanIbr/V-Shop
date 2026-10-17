@@ -19,8 +19,9 @@ class CartController
         return Inertia::render('User/CartList', [
             'items'     => $this->cart->getCartItems()->values(),
             'total'     => $this->cart->getTotal(),
-            'address'   => $user?->addresses()->where('is_main', true)->first(),
-            'addresses' => $user?->addresses()->latest()->get() ?? [],
+            'address'   => $user?->addresses()->where('is_main', true)->latest()
+                ->first(),
+            // 'addresses' => $user?->addresses()->latest()->get() ?? [],
         ]);
     }
 

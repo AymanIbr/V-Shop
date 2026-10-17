@@ -46,4 +46,10 @@ class Order extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+
+    // created by
+    protected static function booted(): void
+    {
+        static::creating(fn($order) => $order->created_by = auth()->id());
+    }
 }

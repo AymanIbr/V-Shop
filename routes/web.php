@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\ProductListController;
+use App\Http\Controllers\User\UserAddressController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,10 +35,19 @@ Route::controller(CartController::class)->prefix('cart')->name('cart.')->group(f
 });
 
 // Route for Product List & Filter
- Route::prefix('products')->controller(ProductListController::class)->group(function() {
-        Route::get('/','index')->name('productList.index');
- });
+Route::prefix('products')->controller(ProductListController::class)->group(function () {
+    Route::get('/', 'index')->name('productList.index');
+});
 
+
+// routes/web.php
+Route::middleware('auth')->group(function () {
+    Route::post('/addresses', [UserAddressController::class, 'store'])->name('addresses.store');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1')->name('checkout.store');
+    Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/cancel/{order}', [CheckoutController::class, 'cancel'])->name('checkout.cancel');
+});
+Route::post('/stripe/webhook', [CheckoutController::class, 'webhook'])->name('stripe.webhook');
 
 
 
